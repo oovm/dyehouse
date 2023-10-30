@@ -1,19 +1,19 @@
 use super::*;
 
-impl<T> From<&str> for CodeView<T>
+impl<T> From<&str> for CodeRender2<T>
 where
     T: Clone,
 {
     fn from(s: &str) -> Self {
-        CodeView::blank(s)
+        CodeRender2::blank(s)
     }
 }
 
-impl<T> From<String> for CodeView<T>
+impl<T> From<String> for CodeRender2<T>
 where
     T: Clone,
 {
     fn from(s: String) -> Self {
-        CodeView::blank(s)
+        CodeRender2::blank(s)
     }
 }

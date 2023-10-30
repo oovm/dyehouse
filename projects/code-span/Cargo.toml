@@ -11,6 +11,7 @@ edition = "2021"
 exclude = ["*.json"]
 
 [dependencies]
+rust-lapper = "1.1.0"
 serde = { version = "1.0.148", features = ["derive"] }
 
 [dev-dependencies]
