@@ -1,11 +1,6 @@
-use std::{
-    collections::{BTreeMap, BTreeSet},
-    fmt::Debug,
-    ops::Range,
-};
+Use rust to write a code highlighting plug-in. Note that spans may overlap. This is boilerplate code.
 
-mod iter;
-
+```rust
 #[derive(Debug)]
 pub struct CodeRender<'i, 's> {
     /// raw text
@@ -70,3 +65,5 @@ fn main() {
     code_render.mark_span(7..12, "keyword");
     println!("{:#?}", code_render);
 }
+
+```
