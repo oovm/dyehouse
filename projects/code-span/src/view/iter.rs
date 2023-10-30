@@ -1,6 +1,6 @@
-use std::{collections::BTreeSet, ops::Range};
+use std::ops::Range;
 
-use crate::view::{CodeRender, CodeView, InnerSpan};
+use crate::view::{CodeRender, CodeView, IntervalRepr};
 
 /// # Arguments
 ///
@@ -17,7 +17,7 @@ use crate::view::{CodeRender, CodeView, InnerSpan};
 #[derive(Debug)]
 pub struct CodeRendered<'r, 'i, 's> {
     text: &'i str,
-    iter: std::collections::btree_map::Iter<'r, usize, InnerSpan<'s>>,
+    iter: std::collections::btree_map::Iter<'r, usize, IntervalRepr<'s>>,
 }
 
 impl<'r, 'i, 's> IntoIterator for &'r CodeRender<'i, 's> {
@@ -25,7 +25,7 @@ impl<'r, 'i, 's> IntoIterator for &'r CodeRender<'i, 's> {
     type IntoIter = CodeRendered<'r, 'i, 's>;
 
     fn into_iter(self) -> Self::IntoIter {
-        CodeRendered { text: self.text, iter: self.interval.iter() }
+        CodeRendered { text: self.text, iter: self.intervals.iter() }
     }
 }
 
