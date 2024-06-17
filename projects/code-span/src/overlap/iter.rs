@@ -1,6 +1,6 @@
 use std::ops::Range;
 
-use crate::view::{CodeRender, CodeView, IntervalRepr};
+use crate::overlap::{CodeHighlighter, CodeView, IntervalRepr};
 
 /// # Arguments
 ///
@@ -20,7 +20,7 @@ pub struct CodeRendered<'r, 'i, 's> {
     iter: std::collections::btree_map::Iter<'r, usize, IntervalRepr<'s>>,
 }
 
-impl<'r, 'i, 's> IntoIterator for &'r CodeRender<'i, 's> {
+impl<'r, 'i, 's> IntoIterator for &'r CodeHighlighter<'i, 's> {
     type Item = CodeView<'r, 'i, 's>;
     type IntoIter = CodeRendered<'r, 'i, 's>;
 
@@ -34,6 +34,7 @@ impl<'r, 'i, 's> Iterator for CodeRendered<'r, 'i, 's> {
 
     fn next(&mut self) -> Option<Self::Item> {
         let (start, span) = self.iter.next()?;
+        // let safe_end = span.end.min(self.text.len());
         let range = Range { start: *start, end: span.end };
         let text = self.text.get(range.clone())?;
         Some(CodeView { text, kind: &span.styles })

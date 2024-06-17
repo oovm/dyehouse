@@ -7,7 +7,7 @@ impl HtmlWriter {
     /// # Arguments
     ///
     /// * `writer`:
-    /// * `view`:
+    /// * `overlap`:
     ///
     /// returns: Result<(), Error>
     ///

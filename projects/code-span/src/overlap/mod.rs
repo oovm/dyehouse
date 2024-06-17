@@ -4,14 +4,22 @@ use std::{
     ops::Range,
 };
 
+pub use self::iter::CodeRendered;
+
 mod iter;
 
 #[derive(Debug)]
-pub struct CodeRender<'i, 's> {
+pub struct CodeHighlighter<'i, 's> {
     /// raw text
     text: &'i str,
     /// start -> (styles , end)
     intervals: BTreeMap<usize, IntervalRepr<'s>>,
+}
+
+#[derive(Copy, Clone, Debug)]
+pub struct CodeView<'r, 'i, 's> {
+    pub text: &'i str,
+    pub kind: &'r BTreeSet<&'s str>,
 }
 
 #[derive(Clone, Debug)]
@@ -20,17 +28,12 @@ struct IntervalRepr<'s> {
     end: usize,
 }
 
-impl<'i, 's> CodeRender<'i, 's> {
+impl<'i, 's> CodeHighlighter<'i, 's> {
     pub fn new(text: &'i str) -> Self {
         let mut interval = BTreeMap::new();
+        // Mark all code as no style
         interval.insert(0, IntervalRepr { styles: Default::default(), end: text.len() });
         Self { text, intervals: interval }
-    }
-    pub fn get_span<'r>(&'r mut self, offset: usize) -> Option<CodeView<'r, 'i, 's>> {
-        let (start, span) = self.intervals.range(offset..).next()?;
-        let range = Range { start: *start, end: span.end };
-        let text = self.text.get(range.clone())?;
-        Some(CodeView { text, kind: &span.styles })
     }
     pub fn mark_span(&mut self, span: Range<usize>, style: &'s str) {
         match self.intervals.get(&span.start) {
@@ -73,16 +76,10 @@ impl<'i, 's> CodeRender<'i, 's> {
 }
 
 #[test]
-fn main() {
-    let mut code_render = CodeRender::new("public class Main {}");
+fn colorize() {
+    let mut code_render = CodeHighlighter::new("public class Main {}");
     code_render.mark_span(0..6, "keyword");
     code_render.mark_span(7..12, "keyword");
     code_render.mark_span(13..17, "class");
     println!("{:#?}", code_render);
-}
-
-#[derive(Copy, Clone, Debug)]
-pub struct CodeView<'r, 'i, 's> {
-    pub text: &'i str,
-    pub kind: &'r BTreeSet<&'s str>,
 }

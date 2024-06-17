@@ -5,5 +5,6 @@
 #![allow(clippy::derivable_impls)]
 #![doc = include_str!("../readme.md")]
 
-// pub use self::view::{iter::CodeViewIter, CodeSpan2, CodeRender2};
-mod view;
+// pub use self::overlap::{iter::CodeViewIter, CodeSpan2, CodeRender2};
+pub mod no_overlap;
+pub mod overlap;

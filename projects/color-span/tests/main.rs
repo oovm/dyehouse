@@ -17,7 +17,7 @@ pub fn test_deserialize() {
     let mut view = ColorView::from("public static class G {}");
     view.dye_offset(0, 6, "keyword");
     view.dye_offset(7, 13, "keyword");
-    // assert_eq!(serde_json::to_string(&view).unwrap(), include_str!("keyword.json"));
+    // assert_eq!(serde_json::to_string(&overlap).unwrap(), include_str!("keyword.json"));
     assert_eq!(view, from_str(include_str!("keyword.json")).unwrap())
 }
 
